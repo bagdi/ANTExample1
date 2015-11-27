@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ANTExample" default="new.target">
+
+    <property name="folder" value="build"/>
+
+    <!--удаляем старую сборку-->
+    <target name="clear">
+        <delete dir="${folder}"/>
+    </target>
+
+    <!--скомпилируем наш проект-->
+    <!--javac - компилятор java-->
+    <target name="compile" depends="clear">
+        <mkdir dir="${folder}/classes"/>
+        <mkdir dir="${folder}/bin"/>
+        <javac destdir="${folder}/classes">
+            <src path="./"/>
+        </javac>
+    </target>
+
+    <!-- наша дэфолтовая цель-->
+    <target name="new.target" depends="compile">
+        <echo>Hello ANT</echo>
+        <!--где будет расположен jar файл-->
+        <jar destfile="${folder}/bin/myProgram.jar">
+            <fileset dir="${folder}/classes">
+                <include name="**/*.class"/>
+                <exclude name="Test/**/*.class"/>
+            </fileset>
+            <path id="libsPath">
+                <fileset dir="libs">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </path>
+            <manifest>
+                <attribute name="Main-class" value="main.MainClass"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
